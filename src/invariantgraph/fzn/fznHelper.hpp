@@ -73,6 +73,21 @@ std::shared_ptr<T> getArgArray(const fznparser::Arg& argArray) {
   return std::get<std::shared_ptr<T>>(argArray);
 }
 
+#define FZN_ANN_TYPE_CHECK(ann, index, type, isVar)                         \
+  do {                                                                      \
+    if (ann.expressions().size() <= index) {                                \
+      throw FznArgumentException("Annotation " + ann.identifier() +         \
+                                 " has too few arguments.");                \
+    }                                                                       \
+    if (!std::holds_alternative<type>(ann.expressions().at(index).at(0))) { \
+      throw FznArgumentException(                                           \
+          "Invalid argument for annotation " + constraint.identifier() +    \
+          " at position" + std::to_string(index) + ": expected \"" +        \
+          to_string(typeid(type), isVar) + "\" but got \"" +                \
+          to_string(typeid(ann.expressions().at(index)), isVar) + '.');     \
+    }                                                                       \
+  } while (false);
+
 #define FZN_CONSTRAINT_TYPE_CHECK(constraint, index, type, isVar)            \
   do {                                                                       \
     if (constraint.arguments().size() <= index) {                            \
@@ -96,7 +111,7 @@ std::shared_ptr<T> getArgArray(const fznparser::Arg& argArray) {
                                  " has too few arguments.");                 \
     }                                                                        \
     if (constraint.arguments().at(index).isEmptyArray()) {                   \
-      return true;                                                           \
+      break;                                                                 \
     }                                                                        \
     if (!std::holds_alternative<std::shared_ptr<arrayType>>(                 \
             constraint.arguments().at(index))) {                             \
