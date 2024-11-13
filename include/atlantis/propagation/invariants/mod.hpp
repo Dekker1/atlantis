@@ -14,8 +14,7 @@ namespace atlantis::propagation {
 class Mod : public Invariant {
  private:
   VarId _output;
-  VarViewId _nominator, _denominator;
-  Int _zeroReplacement{1};
+  VarViewId _numerator, _denominator;
 
  public:
   explicit Mod(SolverBase&, VarId output, VarViewId numerator,

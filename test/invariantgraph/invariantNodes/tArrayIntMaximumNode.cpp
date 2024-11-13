@@ -103,7 +103,7 @@ TEST_P(ArrayIntMaximumNodeTestFixture, application) {
   // x1, x2 and outputVarNodeId
   EXPECT_EQ(_solver->numVars(), 4);
 
-  // maxSparse
+  // max
   EXPECT_EQ(_solver->numInvariants(), 1);
 }
 
@@ -193,7 +193,7 @@ TEST_P(ArrayIntMaximumNodeTestFixture, propagation) {
 
   std::vector<Int> inputVals = makeInputVals(inputVarIds);
 
-  while (increaseNextVal(inputVarIds, inputVals)) {
+  while (increaseNextVal(inputVarIds, inputVals) >= 0) {
     _solver->beginMove();
     setVarVals(inputVarIds, inputVals);
     _solver->endMove();
