@@ -3,6 +3,7 @@
 #include <limits.h>
 
 #include <cstdint>
+#include <ostream>
 #include <string>
 
 #include "atlantis/types.hpp"
@@ -51,6 +52,11 @@ struct InvariantNodeId {
 
   bool operator!=(const InvariantNodeId& other) const {
     return !(operator==(other));
+  }
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const InvariantNodeId& invariantNodeId) {
+    return os << (invariantNodeId.isImplicitConstraint() ? "impl_" : "inv_")
+              << size_t(invariantNodeId);
   }
 
   bool operator!=(size_t other) const { return !(operator==(other)); }
