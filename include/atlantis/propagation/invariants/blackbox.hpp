@@ -18,13 +18,13 @@ class Blackbox : public Invariant {
 
  public:
   Blackbox(SolverBase&, std::unique_ptr<blackbox::BlackBoxFn>&& blackBoxFn,
-           std::vector<VarId>&& outputs, std::vector<VarId>&& inputs);
+           std::vector<VarViewId>&& outputs, std::vector<VarViewId>&& inputs);
 
   void registerVars() override;
   void updateBounds(bool) override {}
   void recompute(Timestamp) override;
   void notifyInputChanged(Timestamp, LocalId) override;
-  VarId nextInput(Timestamp) override;
+  VarViewId nextInput(Timestamp) override;
   void notifyCurrentInputChanged(Timestamp) override;
 };
 

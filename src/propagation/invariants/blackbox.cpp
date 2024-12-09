@@ -6,13 +6,23 @@
 
 namespace atlantis::propagation {
 
+inline std::vector<VarId> toVarIds(std::vector<VarViewId>&& ids) {
+  std::vector<VarId> varIds;
+  varIds.reserve(ids.size());
+  for (const auto& id : ids) {
+    assert(id.isVar());
+    varIds.emplace_back(VarId(id));
+  }
+  return varIds;
+}
+
 Blackbox::Blackbox(SolverBase& solver,
                    std::unique_ptr<blackbox::BlackBoxFn>&& blackBoxFn,
-                   std::vector<VarId>&& outputs, std::vector<VarId>&& inputs)
+                   std::vector<VarViewId>&& outputs, std::vector<VarViewId>&& inputs)
     : Invariant(solver),
       _blackBoxFn(std::move(blackBoxFn)),
-      _outputs(std::move(outputs)),
-      _inputs(std::move(inputs)) {}
+      _outputs(toVarIds(std::move(outputs))),
+      _inputs(toVarIds(std::move(inputs))) {}
 
 void Blackbox::registerVars() {
   assert(_id != NULL_ID);
@@ -53,7 +63,7 @@ void Blackbox::notifyInputChanged(Timestamp timestamp, LocalId localId) {
   recompute(timestamp);
 }
 
-VarId Blackbox::nextInput(Timestamp timestamp) {
+VarViewId Blackbox::nextInput(Timestamp timestamp) {
   const auto index = static_cast<size_t>(_state.incValue(timestamp, 1));
   assert(0 <= _state.value(timestamp));
   if (index < _inputs.size()) {

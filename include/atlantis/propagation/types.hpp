@@ -75,6 +75,6 @@ enum class OutputToInputMarkingMode : char {
   OUTPUT_TO_INPUT_STATIC
 };
 
-enum class ObjectiveDirection : char { MINIMIZE = 1, MAXIMIZE = -1, NONE = 0 };
+enum class ObjectiveDirection : signed char { MINIMIZE = 1, MAXIMIZE = -1, NONE = 0 };
 
 }  // namespace atlantis::propagation

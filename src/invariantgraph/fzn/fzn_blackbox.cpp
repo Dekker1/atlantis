@@ -21,8 +21,11 @@ bool fzn_blackbox(FznInvariantGraph& graph,
   }
 
   graph.addInvariantNode(std::make_unique<BlackBoxNode>(
-      std::move(blackboxFn), graph.retrieveVarNodes(int_in),
-      graph.retrieveVarNodes(int_out)));
+      graph,
+      std::move(blackboxFn),
+      graph.retrieveVarNodes(int_in),
+      graph.retrieveVarNodes(int_out)
+  ));
   return true;
 }
 
